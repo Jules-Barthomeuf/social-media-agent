@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADAISTRA - Social Media Post Generator</title>
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes hoverScale {
+      to { transform: scale(1.05); box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); }
+    }
+    @keyframes particleFloat {
+      0% { transform: translateY(0); opacity: 0.1; }
+      50% { transform: translateY(-100px); opacity: 0.8; }
+      100% { transform: translateY(0); opacity: 0.1; }
+    }
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background-color: #ffffff;
+      border-radius: 50%;
+      animation: particleFloat 10s ease-in-out infinite;
+    }
+    .bg-starfield {
+      background: #000000 url('/mnt/data/86ce4079-f9c6-41d5-b4db-7c2d79e4879f.png') center/cover no-repeat;
+      position: relative;
+      overflow: hidden;
+    }
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    .animate-fade-in { animation: fadeIn 0.8s ease-out; }
+    .hover-scale { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .hover-scale:hover { transform: scale(1.05); box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); }
+    .custom-button {
+      transition: all 0.3s ease, color 0.3s ease;
+      text-transform: uppercase;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 3rem;
+      padding-left: 4rem;
+      padding-right: 4rem;
+      font-size: 0.875rem;
+      color: #000000;
+      letter-spacing: 0.05em;
+      position: relative;
+      z-index: 10;
+      overflow: hidden;
+      border-radius: 9999px;
+      border: 2px solid #8d0000;
+      background-color: #ffffff;
+      animation: glowPulse 2s infinite ease-in-out, borderGlow 2s infinite ease-in-out;
+    }
+    .custom-button:hover {
+      background-color: #e0e0e0;
+    }
+    .custom-button.vision {
+      background-color: transparent;
+      color: #ffffff;
+      border: 1px solid #ffffff;
+    }
+    .custom-button.vision:hover {
+      background-color: rgba(144, 106, 106, 0.1);
+    }
+    body { font-family: 'Montserrat', sans-serif; }
+  </style>
+</head>
+<body class="bg-starfield min-h-screen flex flex-col text-white">
+  <div class="particles">
+    <div
+      class="particle"
+      style="top: 12%; left: 63%; animation-delay: 0.7s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 77%; left: 15%; animation-delay: 0.2s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 38%; left: 84%; animation-delay: 1.1s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 25%; left: 48%; animation-delay: 0.4s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 61%; left: 32%; animation-delay: 1.3s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 5%; left: 72%; animation-delay: 0s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 83%; left: 27%; animation-delay: 0.9s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 44%; left: 11%; animation-delay: 0.6s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 69%; left: 90%; animation-delay: 0.3s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 19%; left: 38%; animation-delay: 1s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 20%; left: 25%; animation-delay: 1.4s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 33%; left: 67%; animation-delay: 0.8s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 58%; left: 49%; animation-delay: 0.1s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 82%; left: 12%; animation-delay: 1.5s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 95%; left: 74%; animation-delay: 0.5s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 46%; left: 57%; animation-delay: 1.2s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 29%; left: 5%; animation-delay: 0.6s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 56%; left: 80%; animation-delay: 1.6s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 66%; left: 39%; animation-delay: 0.3s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 36%; left: 41%; animation-delay: 0.9s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 92%; left: 29%; animation-delay: 1.5s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 18%; left: 46%; animation-delay: 0.5s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 11%; left: 60%; animation-delay: 1.6s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 24%; left: 42%; animation-delay: 0.5s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 31%; left: 69%; animation-delay: 1.6s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 28%; left: 80%; animation-delay: 0.5s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 70%; left: 88%; animation-delay: 1.6s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 86%; left: 30%; animation-delay: 0.3s;"
+    ></div>
+    <div
+      class="particle"
+      style="top: 92%; left: 50%; animation-delay: 0.3s;"
+    ></div>
+  </div>
+  <header class="bg-black/80 backdrop-blur-md p-4 flex items-center justify-between sticky top-0 z-10 w-full">
+    <div class="flex items-center space-x-4">
+      <h1 id="header-logo" class="text-2xl font-extrabold text-white">ADAISTRA</h1>
+    </div>
+    <nav class="hidden md:flex space-x-6">
+      <a href="/contact.html" class="text-white0 hover:text-white transition">Contact</a>
+      <a href="/index.html" class="text-white hover:text-white transition">Home</a>
+      <a href="/vision.html" class="text-white hover:text-white transition">Our Vision</a>
+    </nav>
+    <div class="flex space-x-4">
+      <button onclick="window.location.href='/signin.html'" class="bg-gray-800 text-gray-100 px-4 py-2 rounded-full hover:bg-gray-700 transition-all duration-300 hover-scale text-sm font-semibold">Sign In</button>
+      <button onclick="window.location.href='/signin.html'" class="bg-gray-800 text-gray-100 px-4 py-2 rounded-full hover:bg-gray-700 transition-all duration-300 hover-scale text-sm font-semibold">Get Started</button>
+    </div>
+  </header>
+  <main class="flex-1 flex items-center justify-center p-8 md:p-12 w-full">
+    <div class="text-center space-y-8 animate-fade-in">
+      <h1 class="text-5xl md:text-6xl font-extrabold uppercase text-white">Perfect Content With AI</h1>
+      <p class="text-lg md:text-xl text-gray-400">Create posts that mimic your voice for free</p>
+      <div class="flex flex-col items-center space-y-4">
+        <button
+          onclick="window.location.href='/generator.html'"
+          class="custom-button hover-scale"
+        >Try Without Login</button>
+        <button
+          onclick="window.location.href='/signin.html'"
+          class="custom-button vision hover-scale"
+        >Sign In</button>
+        <button
+          onclick="window.location.href='/vision.html'"
+          class="custom-button vision hover-scale"
+        >See Our Vision</button>
+      </div>
+    </div>
+  </main>
+  <script type="module">
+    const firebaseConfig = {
+      apiKey: "AIzaSyBqmlnGNtaOJk7XRUirJYQzGWmrABt8VNM",
+      authDomain: "adaistra.firebaseapp.com",
+      projectId: "adaistra",
+      storageBucket: "adaistra.firebasestorage.app",
+      messagingSenderId: "941356488938",
+      appId: "1:941356488938:web:1e6ad004ecd7c0fde69f93",
+      measurementId: "G-VRG3DR9ZDM"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        window.location.href = '/generator.html';
+      }
+    });
+  </script>
+</body>
+</html>

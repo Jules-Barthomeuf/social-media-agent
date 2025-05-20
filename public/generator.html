@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ADAISTRA - Content Generator</title>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Montserrat', sans-serif; background: black; color: white; position: relative; }
+
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0; /* Ensure particles are behind all other content */
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background-color: #ffffff;
+      border-radius: 50%;
+      animation: particleFloat 10s ease-in-out infinite;
+    }
+
+    @keyframes particleFloat {
+      0% { transform: translateY(0); opacity: 0.1; }
+      50% { transform: translateY(-100px); opacity: 0.8; }
+      100% { transform: translateY(0); opacity: 0.1; }
+    }
+
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      height: 50vh; /* Reduced to fit the shorter modal */
+      overflow: hidden;
+    }
+
+    .carousel {
+      display: flex;
+      height: 100%;
+      transition: transform 0.5s ease;
+    }
+
+    .carousel-card {
+      flex: 0 0 calc(33.333% - 1rem); /* Three columns with gap */
+      margin-right: 1.5rem; /* Gap between cards */
+      background-color: #001026;
+      padding: 1.5rem;
+      border-radius: 0.75rem;
+      border: 1px solid #d1d5db; /* Softer gray border */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%; /* Full height of the container */
+    }
+
+    .carousel-card textarea {
+      font-size: 1.1rem; /* Adjusted for readability in smaller columns */
+      line-height: 1.5rem;
+      flex-grow: 1; /* Allow textarea to expand */
+    }
+
+    .custom-button {
+      background: white;
+      color: black;
+      font-weight: bold;
+      padding: 0.75rem 2rem;
+      border-radius: 9999px;
+      transition: all 0.2s ease;
+      border: 2px solid #8d0000;
+    }
+
+    .custom-button:hover {
+      background: #f0f0f0;
+    }
+
+    .loader {
+      width: 24px;
+      height: 24px;
+      border: 4px solid transparent;
+      border-top: 4px solid #ff3333;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 8px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .nav-link {
+      color: white;
+      font-weight: 600;
+      padding: 0.5rem 1rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: #d1d5db; /* Matches the border-gray-300 used elsewhere */
+    }
+
+    /* Added styles from index.html for the header */
+    .hover-scale { 
+      transition: transform 0.3s ease, box-shadow 0.3s ease; 
+    }
+
+    .hover-scale:hover { 
+      transform: scale(1.05); 
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); 
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <div class="particles">
+    <div class="particle" style="top: 12%; left: 63%; animation-delay: 0.7s;"></div>
+    <div class="particle" style="top: 77%; left: 15%; animation-delay: 0.2s;"></div>
+    <div class="particle" style="top: 38%; left: 84%; animation-delay: 1.1s;"></div>
+    <div class="particle" style="top: 25%; left: 48%; animation-delay: 0.4s;"></div>
+    <div class="particle" style="top: 61%; left: 32%; animation-delay: 1.3s;"></div>
+    <div class="particle" style="top: 5%; left: 72%; animation-delay: 0s;"></div>
+    <div class="particle" style="top: 83%; left: 27%; animation-delay: 0.9s;"></div>
+    <div class="particle" style="top: 44%; left: 11%; animation-delay: 0.6s;"></div>
+    <div class="particle" style="top: 69%; left: 90%; animation-delay: 0.3s;"></div>
+    <div class="particle" style="top: 19%; left: 38%; animation-delay: 1s;"></div>
+    <div class="particle" style="top: 20%; left: 25%; animation-delay: 1.4s;"></div>
+    <div class="particle" style="top: 33%; left: 67%; animation-delay: 0.8s;"></div>
+    <div class="particle" style="top: 58%; left: 49%; animation-delay: 0.1s;"></div>
+    <div class="particle" style="top: 82%; left: 12%; animation-delay: 1.5s;"></div>
+    <div class="particle" style="top: 95%; left: 74%; animation-delay: 0.5s;"></div>
+    <div class="particle" style="top: 46%; left: 57%; animation-delay: 1.2s;"></div>
+    <div class="particle" style="top: 29%; left: 5%; animation-delay: 0.6s;"></div>
+    <div class="particle" style="top: 56%; left: 80%; animation-delay: 1.6s;"></div>
+    <div class="particle" style="top: 66%; left: 39%; animation-delay: 0.3s;"></div>
+    <div class="particle" style="top: 36%; left: 41%; animation-delay: 0.9s;"></div>
+    <div class="particle" style="top: 92%; left: 29%; animation-delay: 1.5s;"></div>
+    <div class="particle" style="top: 18%; left: 46%; animation-delay: 0.5s;"></div>
+    <div class="particle" style="top: 11%; left: 60%; animation-delay: 1.6s;"></div>
+    <div class="particle" style="top: 24%; left: 42%; animation-delay: 0.5s;"></div>
+    <div class="particle" style="top: 31%; left: 69%; animation-delay: 1.6s;"></div>
+    <div class="particle" style="top: 28%; left: 80%; animation-delay: 0.5s;"></div>
+    <div class="particle" style="top: 70%; left: 88%; animation-delay: 1.6s;"></div>
+    <div class="particle" style="top: 86%; left: 30%; animation-delay: 0.3s;"></div>
+    <div class="particle" style="top: 92%; left: 50%; animation-delay: 0.3s;"></div>
+  </div>
+
+  <!-- Header from index.html -->
+  <header class="bg-black/80 backdrop-blur-md p-4 flex items-center justify-between sticky top-0 z-10 w-full">
+    <div class="flex items-center space-x-4">
+      <h1 id="header-logo" class="text-2xl font-extrabold text-white">ADAISTRA</h1>
+    </div>
+    <nav class="hidden md:flex space-x-6">
+      <a href="/contact.html" class="text-white hover:text-white transition">Contact</a>
+      <a href="/index.html" class="text-white hover:text-white transition">Home</a>
+      <a href="/vision.html" class="text-white hover:text-white transition">Our Vision</a>
+    </nav>
+    <div class="flex space-x-4">
+      <button onclick="window.location.href='/signin.html'" class="bg-gray-800 text-gray-100 px-4 py-2 rounded-full hover:bg-gray-700 transition-all duration-300 hover-scale text-sm font-semibold">Sign In</button>
+      <button onclick="window.location.href='/signin.html'" class="bg-gray-800 text-gray-100 px-4 py-2 rounded-full hover:bg-gray-700 transition-all duration-300 hover-scale text-sm font-semibold">Get Started</button>
+    </div>
+  </header>
+
+  <main class="flex-1 flex flex-col items-center justify-center p-6">
+    <div class="w-full max-w-5xl space-y-6">
+      <h2 class="text-4xl font-bold text-center">GENERATE SOCIAL MEDIA POSTS</h2>
+      <div class="bg-black border border-gray-300 p-6 rounded-xl space-y-4">
+        <input id="linkedin_url" class="w-full p-3 bg-gray-700 text-white rounded-lg" placeholder="LinkedIn URL" oninput="toggleUrlInputs('linkedin_url', 'x_url')"/>
+        <input id="x_url" class="w-full p-3 bg-gray-700 text-white rounded-lg" placeholder="X URL" oninput="toggleUrlInputs('x_url', 'linkedin_url')"/>
+        <textarea id="prompt" class="w-full h-28 p-3 bg-gray-700 text-white rounded-lg resize-none" placeholder="Prompt (e.g., Business advice)"></textarea>
+      </div>
+      <button id="generateBtn" onclick="generatePosts()" class="custom-button w-full uppercase">GENERATE POSTS</button>
+    </div>
+  </main>
+
+  <div id="postModal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-6">
+    <div class="bg-black border border-gray-300 p-6 rounded-xl w-full max-w-6xl h-[70vh] flex flex-col">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-2xl font-bold">GENERATED POSTS</h3>
+        <button onclick="closeModal()" class="text-gray-400 hover:text-red-400 text-xl">×</button>
+      </div>
+
+      <div class="carousel-container">
+        <div id="postCarousel" class="carousel"></div>
+        <button onclick="scrollCarousel(-1)" class="absolute left-4 top-1/2 -translate-y-1/2 bg-gray-700 text-white px-3 py-2 rounded-full hover:bg-gray-600">←</button>
+        <button onclick="scrollCarousel(1)" class="absolute right-4 top-1/2 -translate-y-1/2 bg-gray-700 text-white px-3 py-2 rounded-full hover:bg-gray-600">→</button>
+      </div>
+
+      <div class="flex justify-center mt-4">
+        <button onclick="regeneratePosts()" class="bg-black border border-gray-300 text-white px-6 py-2 rounded-full hover:bg-gray-800 font-semibold">Regenerate</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentIndex = 0;
+    let maxIndex = 0;
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBqmlnGNtaOJk7XRUirJYQzGWmrABt8VNM",
+      authDomain: "adaistra.firebaseapp.com",
+      projectId: "adaistra",
+      storageBucket: "adaistra.firebasestorage.app",
+      messagingSenderId: "941356488938",
+      appId: "1:941356488938:web:1e6ad004ecd7c0fde69f93",
+      measurementId: "G-VRG3DR9ZDM"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    function toggleUrlInputs(activeId, inactiveId) {
+      const activeInput = document.getElementById(activeId);
+      const inactiveInput = document.getElementById(inactiveId);
+      if (activeInput.value.trim()) {
+        inactiveInput.disabled = true;
+        inactiveInput.classList.add("opacity-50", "cursor-not-allowed");
+        inactiveInput.value = "";
+      } else {
+        inactiveInput.disabled = false;
+        inactiveInput.classList.remove("opacity-50", "cursor-not-allowed");
+      }
+    }
+
+    function signOut() {
+      auth.signOut().then(() => window.location.href = '/index.html');
+    }
+
+    window.onload = () => {
+      document.getElementById("linkedin_url").value = localStorage.getItem("linkedin_url") || "";
+      document.getElementById("x_url").value = localStorage.getItem("x_url") || "";
+      toggleUrlInputs('linkedin_url', 'x_url');
+      toggleUrlInputs('x_url', 'linkedin_url');
+    };
+
+    function closeModal() {
+      document.getElementById("postModal").classList.add("hidden");
+      currentIndex = 0; // Reset index when closing the modal
+    }
+
+    function regeneratePosts() {
+      closeModal();
+    }
+
+    function scrollCarousel(direction) {
+      const carousel = document.getElementById("postCarousel");
+      const cards = carousel.getElementsByClassName("carousel-card");
+
+      if (cards.length <= 3) return; // No need to scroll if 3 or fewer cards
+
+      maxIndex = Math.max(0, cards.length - 3); // Show 3 cards at a time
+      currentIndex = Math.max(0, Math.min(currentIndex + direction, maxIndex));
+
+      // Slide by the width of three cards (accounting for the gap)
+      const cardWidth = cards[0].offsetWidth + 24; // 1.5rem gap = 24px
+      carousel.style.transform = `translateX(-${currentIndex * cardWidth * 3}px)`;
+    }
+
+    function toggleEditMode(textarea, btn) {
+      const isEditing = textarea.readOnly;
+      textarea.readOnly = !isEditing;
+      textarea.classList.toggle("bg-gray-700", !isEditing);
+      textarea.classList.toggle("bg-transparent", isEditing);
+      btn.textContent = isEditing ? "Edit" : "Save";
+      if (isEditing) textarea.focus();
+    }
+
+    function generatePosts() {
+      const linkedinUrl = document.getElementById("linkedin_url").value;
+      const xUrl = document.getElementById("x_url").value;
+      const prompt = document.getElementById("prompt").value;
+      const url = linkedinUrl || xUrl;
+      const btn = document.getElementById("generateBtn");
+
+      if (!url || !prompt) return alert("Please provide both a profile URL and prompt.");
+      localStorage.setItem("linkedin_url", linkedinUrl);
+      localStorage.setItem("x_url", xUrl);
+
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loader"></span> Generating...';
+
+      fetch("/generate-posts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url, topic: prompt })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) throw new Error(data.error);
+        document.getElementById("postModal").classList.remove("hidden");
+        const container = document.getElementById("postCarousel");
+        container.innerHTML = "";
+
+        currentIndex = 0; // Reset index when generating new posts
+        container.style.transform = `translateX(0)`; // Reset position
+
+        data.posts.forEach(post => {
+          const card = document.createElement("div");
+          card.className = "carousel-card";
+          card.innerHTML = `
+            <textarea readonly class="bg-transparent w-full resize-none focus:outline-none text-white">${post}</textarea>
+            <div class="flex justify-end space-x-2 pt-2">
+              <button onclick="navigator.clipboard.writeText(this.parentElement.previousElementSibling.value)" class="text-sm bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded uppercase">Copy</button>
+              <button onclick="toggleEditMode(this.parentElement.previousElementSibling, this)" class="text-sm bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded uppercase">Edit</button>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      })
+      .catch(err => alert("Error: " + err.message))
+      .finally(() => {
+        btn.disabled = false;
+        btn.textContent = "Generate Posts";
+      });
+    }
+  </script>
+</body>
+</html>

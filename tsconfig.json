@@ -14,12 +14,15 @@
     "useDefineForClassFields": true,
     "strictPropertyInitialization": false,
     "allowJs": true,
+    "checkJs": false,
     "strict": true,
     "strictFunctionTypes": false,
     "outDir": "dist",
-    "types": ["jest", "node"],
-    "resolveJsonModule": true
+    "types": ["node"],
+    "resolveJsonModule": true,
+    "baseUrl": ".",               // Helps with relative import resolution
+    "forceConsistentCasingInFileNames": true
   },
-  "include": ["**/*.ts", "**/*.js", "jest.setup.cjs"],
+  "include": ["scripts", "src", "**/*.ts", "**/*.js", "jest.setup.cjs"],
   "exclude": ["node_modules", "dist"]
 }
